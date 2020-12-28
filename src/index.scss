@@ -1,7 +1,9 @@
 $background: #EFEFF2;
+$square-size: 90px;
+$font-size: 18px;
 
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
+  font: $font-size "Century Gothic", Futura, sans-serif;
   margin: 20px;
   background-color: $background;
 }
@@ -24,15 +26,19 @@ ol, ul {
   background: $background;
   border: 1px solid #888;
   float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
+  font: {
+	  size: 72px;
+	  weight: bold;
+  }
+  margin: {
+	  right: -1px;
+	  top: -1px;
+  }
+  line-height: $square-size;
+  height: $square-size;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: $square-size;
 }
 
 .square:focus {
@@ -46,10 +52,35 @@ ol, ul {
 .game {
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
 }
 
 .game-info {
   margin-left: 20px;
+}
+
+.game-info span {
+	cursor: pointer;
+}
+
+.game-info span:hover {
+	text-decoration: underline;
+}
+
+.game-header {
+	font-size: 42px;
+	text-align: center;
+	padding-bottom: 4%;
+}
+
+.game-header-middle {
+	color: #416FF0;
+}
+
+.history-selected {
+  font-weight: bolder;
+}
+
+.winning-square {
+	color: #ad290b;
 }
