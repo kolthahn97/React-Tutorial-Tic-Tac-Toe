@@ -1,6 +1,9 @@
+$background: #EFEFF2;
+
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
+  background-color: $background;
 }
 
 ol, ul {
@@ -18,8 +21,8 @@ ol, ul {
 }
 
 .square {
-  background: #fff;
-  border: 1px solid #999;
+  background: $background;
+  border: 1px solid #888;
   float: left;
   font-size: 24px;
   font-weight: bold;
