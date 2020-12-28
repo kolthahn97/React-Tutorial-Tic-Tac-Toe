@@ -4,19 +4,29 @@ import './index.scss';
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick} style={{color:props.color}}>
+    <button
+      className={(props.isWinner) ? "winning-square square" : "square"}
+      onClick={props.onClick}
+      style={{
+			borderRight: (props.location % 3 == 2) ? "none" : "inherited",
+			borderTop: (props.location < 3) ? "none" : "inherited",
+			borderBottom: (props.location > 4) ? "none" : "inherited",
+			borderLeft: (props.location % 3 == 0) ? "none" : "inherited"
+		}}
+    >
       {props.value}
     </button>
   );
 }
 
 function Board(props) {
-  function renderSquare(i, color) {
+  function renderSquare(i, isWinner) {
     return (
       <Square
         value={props.squares[i]}
         onClick={() => props.onClick(i)}
-        color={color}
+		  location={i}
+        isWinner={isWinner}
       />
     );
   }
@@ -25,7 +35,7 @@ function Board(props) {
   for(let i=0; i<3; i++) {
     const squares = [];
     for(let j=0; j<3; j++) {
-      squares.push(renderSquare(i*3 + j, (props.winner.includes(i*3 + j)) ? 'red' : 'black'))
+      squares.push(renderSquare(i*3 + j, props.winner.includes(i*3 + j)))
     }
     rows.push(<div className="board-row">{squares}</div>)
   }
@@ -70,19 +80,12 @@ function Game(props) {
       'Go to move #' + move :
       'Go to game start';
 
-    if(move == stepNumber && move != history.length - 1) {
-      return (
-        <li key={move}>
-          <button onClick={() => jumpTo(move)}><b>{desc}</b></button>
-        </li>
-      );
-    } else {
-      return (
-        <li key={move}>
-          <button onClick={() => jumpTo(move)}>{desc}</button>
-        </li>
-      );
-    }
+    const isHistorySelected = (move == stepNumber && move != history.length - 1) ? "history-selected" : "";
+    return (
+      <li key={move}>
+        <span onClick={() => jumpTo(move)} className={isHistorySelected}>{desc}</span>
+      </li>
+    );
   });
 
   let status;
@@ -95,27 +98,32 @@ function Game(props) {
   }
 
   return (
-    <div className="game">
-      <div className="game-board">
-        <Board
-          squares={current.squares}
-          onClick={(i) => handleClick(i)}
-          winner={(winner === null) ? [] : winner }
-        />
-      </div>
-      <div className="game-info">
-        <div>{status}</div>
-        <ol>{moves}</ol>
-      </div>
-    </div>
+	 <div>
+		<div className="game-header">
+		  React-<span className="game-header-middle">Tac</span>-Toe
+	   </div>
+		 <div className="game">
+		   <div className="game-board">
+		     <Board
+		       squares={current.squares}
+		       onClick={(i) => handleClick(i)}
+		       winner={(winner === null) ? [] : winner }
+		     />
+		   </div>
+		   <div className="game-info">
+		     <div>{status}</div>
+		     <ol>{moves}</ol>
+		   </div>
+		 </div>
+ 	 </div>
   );
 }
 
 // ========================================
 
 ReactDOM.render(
-  <Game />,
-  document.getElementById('root')
+   <Game />,
+   document.getElementById('root')
 );
 
 function calculateWinner(squares) {
